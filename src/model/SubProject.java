@@ -20,5 +20,5 @@ public class SubProject {
     this.date = date;
   }
 
-  
+
 }
