@@ -5,7 +5,19 @@ import java.time.Instant;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
 
+
+
 public class Main {
+
+
+  // JDBC driver name and database URL
+  static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+  static final String DB_URL = "jdbc:mysql://localhost/Task_manager";
+
+  //  Database credentials
+  static final String USER = "root";
+  static final String PASS = new Config().getConfig().getProperty("database.password");
+
 
   public static void main(String[] args) {
 
