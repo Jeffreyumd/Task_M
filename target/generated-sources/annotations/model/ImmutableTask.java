@@ -16,14 +16,14 @@ import java.util.Objects;
 public final class ImmutableTask implements Task {
   private final String title;
   private final Level level;
-  private final Instant date;
+  private final Option<Instant> date;
   private final Option<String> description;
   private final boolean completed;
 
   private ImmutableTask(
       String title,
       Level level,
-      Instant date,
+      Option<Instant> date,
       Option<String> description,
       boolean completed) {
     this.title = title;
@@ -47,7 +47,7 @@ public final class ImmutableTask implements Task {
   }
 
   /**
-   * @return The value of the {@code title} attribute
+   * @return title of the given task.
    */
   @Override
   public String title() {
@@ -55,7 +55,7 @@ public final class ImmutableTask implements Task {
   }
 
   /**
-   * @return The value of the {@code level} attribute
+   * @return the level of how important the task is.
    */
   @Override
   public Level level() {
@@ -63,15 +63,15 @@ public final class ImmutableTask implements Task {
   }
 
   /**
-   * @return The value of the {@code date} attribute
+   * @return a due date of the task if given.
    */
   @Override
-  public Instant date() {
+  public Option<Instant> date() {
     return date;
   }
 
   /**
-   * @return The value of the {@code description} attribute
+   * @return description of the task if given.
    */
   @Override
   public Option<String> description() {
@@ -79,7 +79,7 @@ public final class ImmutableTask implements Task {
   }
 
   /**
-   * @return The value of the {@code completed} attribute
+   * @return boolean is the task is completed or not.
    */
   @Override
   public boolean completed() {
@@ -110,15 +110,15 @@ public final class ImmutableTask implements Task {
     return new ImmutableTask(this.title, newValue, this.date, this.description, this.completed);
   }
 
-  /**
-   * Copy the current immutable object by setting a value for the {@link Task#date() date} attribute.
-   * A shallow reference equality check is used to prevent copying of the same value by returning {@code this}.
-   * @param value A new value for date
-   * @return A modified copy of the {@code this} object
-   */
-  public final ImmutableTask withDate(Instant value) {
-    if (this.date == value) return this;
-    Instant newValue = Objects.requireNonNull(value, "date");
+  public ImmutableTask withDate(Option<Instant> value) {
+    Option<Instant> newValue = Objects.requireNonNull(value);
+    if (this.date == newValue) return this;
+    return new ImmutableTask(this.title, this.level, newValue, this.description, this.completed);
+  }
+
+  public ImmutableTask withDate(Instant value) {
+    Option<Instant> newValue = Option.some(value);
+    if (this.date == newValue) return this;
     return new ImmutableTask(this.title, this.level, newValue, this.description, this.completed);
   }
 
@@ -159,7 +159,7 @@ public final class ImmutableTask implements Task {
   private boolean equalTo(ImmutableTask another) {
     return title.equals(another.title)
         && level.equals(another.level)
-        && date.equals(another.date)
+        && this.date().equals(another.date())
         && this.description().equals(another.description())
         && completed == another.completed;
   }
@@ -173,7 +173,7 @@ public final class ImmutableTask implements Task {
     int h = 5381;
     h += (h << 5) + title.hashCode();
     h += (h << 5) + level.hashCode();
-    h += (h << 5) + date.hashCode();
+    h += (h << 5) + (date().hashCode());
     h += (h << 5) + (description().hashCode());
     h += (h << 5) + Boolean.hashCode(completed);
     return h;
@@ -188,7 +188,7 @@ public final class ImmutableTask implements Task {
     return "Task{"
         + "title=" + title
         + ", level=" + level
-        + ", date=" + date
+        + ", date=" + (date().toString())
         + ", description=" + (description().toString())
         + ", completed=" + completed
         + "}";
@@ -228,14 +228,13 @@ public final class ImmutableTask implements Task {
   public static final class Builder {
     private static final long INIT_BIT_TITLE = 0x1L;
     private static final long INIT_BIT_LEVEL = 0x2L;
-    private static final long INIT_BIT_DATE = 0x4L;
-    private static final long INIT_BIT_COMPLETED = 0x8L;
-    private long initBits = 0xfL;
+    private static final long INIT_BIT_COMPLETED = 0x4L;
+    private long initBits = 0x7L;
 
+    private Option<Instant> date_optional = Option.none();
     private Option<String> description_optional = Option.none();
     private String title;
     private Level level;
-    private Instant date;
     private boolean completed;
 
     private Builder() {
@@ -280,14 +279,18 @@ public final class ImmutableTask implements Task {
       return this;
     }
 
-    /**
-     * Initializes the value for the {@link Task#date() date} attribute.
-     * @param date The value for date 
-     * @return {@code this} builder for use in a chained invocation
-     */
-    public final Builder date(Instant date) {
-      this.date = Objects.requireNonNull(date, "date");
-      initBits &= ~INIT_BIT_DATE;
+    public Builder date(Option<Instant> opt) {
+      this.date_optional = opt;
+      return this;
+    }
+
+    public Builder date(Instant x) {
+      this.date_optional = Option.of(x);
+      return this;
+    }
+
+    public Builder unsetDate() {
+      this.date_optional = Option.none();
       return this;
     }
 
@@ -326,16 +329,19 @@ public final class ImmutableTask implements Task {
       if (initBits != 0) {
         throw new IllegalStateException(formatRequiredAttributesMessage());
       }
-      return new ImmutableTask(title, level, date, description_build(), completed);
+      return new ImmutableTask(title, level, date_build(), description_build(), completed);
     }
 
     private String formatRequiredAttributesMessage() {
       List<String> attributes = new ArrayList<>();
       if ((initBits & INIT_BIT_TITLE) != 0) attributes.add("title");
       if ((initBits & INIT_BIT_LEVEL) != 0) attributes.add("level");
-      if ((initBits & INIT_BIT_DATE) != 0) attributes.add("date");
       if ((initBits & INIT_BIT_COMPLETED) != 0) attributes.add("completed");
       return "Cannot build Task, some of required attributes are not set " + attributes;
+    }
+
+    private Option<Instant> date_build() {
+      return this.date_optional;
     }
 
     private Option<String> description_build() {

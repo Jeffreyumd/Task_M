@@ -1,23 +1,14 @@
 package model;
 
+import java.sql.Connection;
 import java.time.Instant;
 
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
 
 
-
 public class Main {
-
-
-  // JDBC driver name and database URL
-  static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-  static final String DB_URL = "jdbc:mysql://localhost/Task_manager";
-
-  //  Database credentials
-  static final String USER = "root";
-  static final String PASS = new Config().getConfig().getProperty("database.password");
-
+  private static Connection myConn;
 
   public static void main(String[] args) {
 
@@ -37,13 +28,20 @@ public class Main {
                     .build()
     );
 
-    // To make copies.
-    // Project p  = null;
-    // ImmutableProject.copyOf(p).withDueDate(...);
+
+    String user = "root";
+    String password = "Qsetthuk7";
+    String url = "jdbc:mysql://localhost:3306/Task_manager?useUnicode=" +
+            "true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode" +
+            "=false&serverTimezone=UTC";
 
 
-    System.out.println(projects);
+    DAO dao = new DAO(url, user, password);
+    dao.getConnection();
+    //dao.getAll_Task();
+    dao.printAll_Task();
+    dao.closeConnection();
+
+
   }
-
-
 }
