@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.immutables.value.Generated;
 
 /**
  * Immutable implementation of {@link Project}.
@@ -15,6 +16,7 @@ import java.util.Objects;
  * Use the builder to create immutable instances:
  * {@code ImmutableProject.builder()}.
  */
+@Generated(from = "Project", generator = "Immutables")
 @SuppressWarnings({"all"})
 public final class ImmutableProject implements Project {
   private final String id;
@@ -22,21 +24,18 @@ public final class ImmutableProject implements Project {
   private final Option<Instant> dueDate;
   private final boolean completed;
   private final List<Task> tasks;
-  private final List<Project> subProjects;
 
   private ImmutableProject(
       String id,
       String name,
       Option<Instant> dueDate,
       boolean completed,
-      List<Task> tasks,
-      List<Project> subProjects) {
+      List<Task> tasks) {
     this.id = id;
     this.name = name;
     this.dueDate = dueDate;
     this.completed = completed;
     this.tasks = tasks;
-    this.subProjects = subProjects;
     this.initShim = null;
   }
 
@@ -45,6 +44,7 @@ public final class ImmutableProject implements Project {
   private static final byte STAGE_INITIALIZED = 1;
   private transient volatile InitShim initShim = new InitShim();
 
+  @Generated(from = "Project", generator = "Immutables")
   private final class InitShim {
     private String formatInitCycleMessage() {
       List<String> attributes = new ArrayList<>();
@@ -93,23 +93,15 @@ public final class ImmutableProject implements Project {
   }
 
   /**
-   * @return All the sub-projects associated with this project.
-   */
-  @Override
-  public List<Project> subProjects() {
-    return subProjects;
-  }
-
-  /**
    * Copy the current immutable object by setting a value for the {@link Project#id() id} attribute.
    * An equals check used to prevent copying of the same value by returning {@code this}.
    * @param value A new value for id
    * @return A modified copy of the {@code this} object
    */
   public final ImmutableProject withId(String value) {
-    if (this.id.equals(value)) return this;
     String newValue = Objects.requireNonNull(value, "id");
-    return new ImmutableProject(newValue, this.name, this.dueDate, this.completed, this.tasks, this.subProjects);
+    if (this.id.equals(newValue)) return this;
+    return new ImmutableProject(newValue, this.name, this.dueDate, this.completed, this.tasks);
   }
 
   /**
@@ -119,21 +111,21 @@ public final class ImmutableProject implements Project {
    * @return A modified copy of the {@code this} object
    */
   public final ImmutableProject withName(String value) {
-    if (this.name.equals(value)) return this;
     String newValue = Objects.requireNonNull(value, "name");
-    return new ImmutableProject(this.id, newValue, this.dueDate, this.completed, this.tasks, this.subProjects);
+    if (this.name.equals(newValue)) return this;
+    return new ImmutableProject(this.id, newValue, this.dueDate, this.completed, this.tasks);
   }
 
   public ImmutableProject withDueDate(Option<Instant> value) {
     Option<Instant> newValue = Objects.requireNonNull(value);
     if (this.dueDate == newValue) return this;
-    return new ImmutableProject(this.id, this.name, newValue, this.completed, this.tasks, this.subProjects);
+    return new ImmutableProject(this.id, this.name, newValue, this.completed, this.tasks);
   }
 
   public ImmutableProject withDueDate(Instant value) {
     Option<Instant> newValue = Option.some(value);
     if (this.dueDate == newValue) return this;
-    return new ImmutableProject(this.id, this.name, newValue, this.completed, this.tasks, this.subProjects);
+    return new ImmutableProject(this.id, this.name, newValue, this.completed, this.tasks);
   }
 
   /**
@@ -144,7 +136,7 @@ public final class ImmutableProject implements Project {
    */
   public final ImmutableProject withCompleted(boolean value) {
     if (this.completed == value) return this;
-    return new ImmutableProject(this.id, this.name, this.dueDate, value, this.tasks, this.subProjects);
+    return new ImmutableProject(this.id, this.name, this.dueDate, value, this.tasks);
   }
 
   /**
@@ -154,7 +146,7 @@ public final class ImmutableProject implements Project {
    */
   public final ImmutableProject withTasks(Task... elements) {
     List<Task> newValue = createUnmodifiableList(false, createSafeList(Arrays.asList(elements), true, false));
-    return new ImmutableProject(this.id, this.name, this.dueDate, this.completed, newValue, this.subProjects);
+    return new ImmutableProject(this.id, this.name, this.dueDate, this.completed, newValue);
   }
 
   /**
@@ -166,29 +158,7 @@ public final class ImmutableProject implements Project {
   public final ImmutableProject withTasks(Iterable<? extends Task> elements) {
     if (this.tasks == elements) return this;
     List<Task> newValue = createUnmodifiableList(false, createSafeList(elements, true, false));
-    return new ImmutableProject(this.id, this.name, this.dueDate, this.completed, newValue, this.subProjects);
-  }
-
-  /**
-   * Copy the current immutable object with elements that replace the content of {@link Project#subProjects() subProjects}.
-   * @param elements The elements to set
-   * @return A modified copy of {@code this} object
-   */
-  public final ImmutableProject withSubProjects(Project... elements) {
-    List<Project> newValue = createUnmodifiableList(false, createSafeList(Arrays.asList(elements), true, false));
-    return new ImmutableProject(this.id, this.name, this.dueDate, this.completed, this.tasks, newValue);
-  }
-
-  /**
-   * Copy the current immutable object with elements that replace the content of {@link Project#subProjects() subProjects}.
-   * A shallow reference equality check is used to prevent copying of the same value by returning {@code this}.
-   * @param elements An iterable of subProjects elements to set
-   * @return A modified copy of {@code this} object
-   */
-  public final ImmutableProject withSubProjects(Iterable<? extends Project> elements) {
-    if (this.subProjects == elements) return this;
-    List<Project> newValue = createUnmodifiableList(false, createSafeList(elements, true, false));
-    return new ImmutableProject(this.id, this.name, this.dueDate, this.completed, this.tasks, newValue);
+    return new ImmutableProject(this.id, this.name, this.dueDate, this.completed, newValue);
   }
 
   /**
@@ -207,12 +177,11 @@ public final class ImmutableProject implements Project {
         && name.equals(another.name)
         && this.dueDate().equals(another.dueDate())
         && completed == another.completed
-        && tasks.equals(another.tasks)
-        && subProjects.equals(another.subProjects);
+        && tasks.equals(another.tasks);
   }
 
   /**
-   * Computes a hash code from attributes: {@code id}, {@code name}, {@code dueDate}, {@code completed}, {@code tasks}, {@code subProjects}.
+   * Computes a hash code from attributes: {@code id}, {@code name}, {@code dueDate}, {@code completed}, {@code tasks}.
    * @return hashCode value
    */
   @Override
@@ -223,7 +192,6 @@ public final class ImmutableProject implements Project {
     h += (h << 5) + (dueDate().hashCode());
     h += (h << 5) + Boolean.hashCode(completed);
     h += (h << 5) + tasks.hashCode();
-    h += (h << 5) + subProjects.hashCode();
     return h;
   }
 
@@ -239,7 +207,6 @@ public final class ImmutableProject implements Project {
         + ", dueDate=" + (dueDate().toString())
         + ", completed=" + completed
         + ", tasks=" + tasks
-        + ", subProjects=" + subProjects
         + "}";
   }
 
@@ -274,6 +241,7 @@ public final class ImmutableProject implements Project {
    * <p><em>{@code Builder} is not thread-safe and generally should not be stored in a field or collection,
    * but instead used immediately to create instances.</em>
    */
+  @Generated(from = "Project", generator = "Immutables")
   public static final class Builder {
     private static final long INIT_BIT_ID = 0x1L;
     private static final long INIT_BIT_NAME = 0x2L;
@@ -285,7 +253,6 @@ public final class ImmutableProject implements Project {
     private String name;
     private boolean completed;
     private List<Task> tasks = new ArrayList<Task>();
-    private List<Project> subProjects = new ArrayList<Project>();
 
     private Builder() {
     }
@@ -305,7 +272,6 @@ public final class ImmutableProject implements Project {
       dueDate(instance.dueDate());
       completed(instance.completed());
       addAllTasks(instance.tasks());
-      addAllSubProjects(instance.subProjects());
       return this;
     }
 
@@ -403,51 +369,6 @@ public final class ImmutableProject implements Project {
     }
 
     /**
-     * Adds one element to {@link Project#subProjects() subProjects} list.
-     * @param element A subProjects element
-     * @return {@code this} builder for use in a chained invocation
-     */
-    public final Builder addSubProjects(Project element) {
-      this.subProjects.add(Objects.requireNonNull(element, "subProjects element"));
-      return this;
-    }
-
-    /**
-     * Adds elements to {@link Project#subProjects() subProjects} list.
-     * @param elements An array of subProjects elements
-     * @return {@code this} builder for use in a chained invocation
-     */
-    public final Builder addSubProjects(Project... elements) {
-      for (Project element : elements) {
-        this.subProjects.add(Objects.requireNonNull(element, "subProjects element"));
-      }
-      return this;
-    }
-
-
-    /**
-     * Sets or replaces all elements for {@link Project#subProjects() subProjects} list.
-     * @param elements An iterable of subProjects elements
-     * @return {@code this} builder for use in a chained invocation
-     */
-    public final Builder subProjects(Iterable<? extends Project> elements) {
-      this.subProjects.clear();
-      return addAllSubProjects(elements);
-    }
-
-    /**
-     * Adds elements to {@link Project#subProjects() subProjects} list.
-     * @param elements An iterable of subProjects elements
-     * @return {@code this} builder for use in a chained invocation
-     */
-    public final Builder addAllSubProjects(Iterable<? extends Project> elements) {
-      for (Project element : elements) {
-        this.subProjects.add(Objects.requireNonNull(element, "subProjects element"));
-      }
-      return this;
-    }
-
-    /**
      * Builds a new {@link ImmutableProject ImmutableProject}.
      * @return An immutable instance of Project
      * @throws java.lang.IllegalStateException if any required attributes are missing
@@ -456,13 +377,7 @@ public final class ImmutableProject implements Project {
       if (initBits != 0) {
         throw new IllegalStateException(formatRequiredAttributesMessage());
       }
-      return new ImmutableProject(
-          id,
-          name,
-          dueDate_build(),
-          completed,
-          createUnmodifiableList(true, tasks),
-          createUnmodifiableList(true, subProjects));
+      return new ImmutableProject(id, name, dueDate_build(), completed, createUnmodifiableList(true, tasks));
     }
 
     private String formatRequiredAttributesMessage() {

@@ -10,21 +10,6 @@ import model.Task;
 public interface DatabaseAPI {
 
 
-  /**
-   * Task
-   */
-  Try<Seq<Task>> findAlltask();
-
-  Try<List<Task>> findTaskById();
-
-  Try<List<Task>> findTaskByName();
-
-  Try<Void> insertTask(Task task);
-
-  Try<Void> updateTask(Task task);
-
-  Try<Void> deleteTask(Task task);
-
 
   /**
    * Sub-Project

@@ -37,8 +37,5 @@ public interface Project {
    */
   List<Task> tasks();
 
-  /**
-   * @return All the sub-projects associated with this project.
-   */
-  List<Project> subProjects();
+
 }

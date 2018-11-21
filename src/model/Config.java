@@ -9,7 +9,7 @@ import java.util.Properties;
  */
 public class Config {
 
-  public  Properties getConfig() {
+  public Properties getConfig() {
     Properties p = new Properties();
     URL a = this.getClass().getResource("config.properties");
     try {

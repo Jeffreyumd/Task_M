@@ -1,5 +1,7 @@
 package model;
 
+import io.vavr.control.Try;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,7 +34,12 @@ public class DAO {
   public Connection getConnection() {
     if (this.conn == null) {
       try {
-        this.conn = DriverManager.getConnection(url, user, pass);
+
+        this.conn = DriverManager.getConnection(
+                url,
+                user,
+                pass
+        );
         System.out.println("Connection made");
         return this.conn;
       } catch (SQLException e) {
@@ -69,11 +76,6 @@ public class DAO {
       ResultSet rows = stmt.executeQuery(sqlGet);
 
       while (rows.next()) {
-//        System.out.println("Title:" + rows.getString("title")
-//                + ", Level:" + rows.getString("level")
-//                + ", Date:" + rows.getString("date")
-//                + ", Description:" + rows.getString("description")
-//                + ", Completed:" + rows.getString("completed"));
         list.add(createTask(rows));
       }
 
@@ -117,6 +119,35 @@ public class DAO {
   public int getTaksCount() {
     return list.size();
   }
+
+  public Try<Void> insertTask(Task task) {
+
+    return null;
+  }
+
+  public Try<Void> updateTask(Task task) {
+    return null;
+  }
+
+  public Try<Void> deleteTask(Task task) {
+    return  null;
+  }
+
+
+  /**
+   * Project methods
+   */
+
+
+  public void getAll_Project() {
+
+  }
+
+  private Project createProject() {
+    return null;
+  }
+
+
 
 
 

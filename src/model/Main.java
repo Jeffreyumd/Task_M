@@ -1,7 +1,7 @@
 package model;
 
 import java.sql.Connection;
-import java.time.Instant;
+
 
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
@@ -17,16 +17,22 @@ public class Main {
                     .id("111")
                     .name("Project 1")
                     .completed(false)
-                    .addTasks(
-                            ImmutableTask.builder()
-                                    .completed(false)
-                                    .title("Task 1")
-                                    .date(Instant.now())
-                                    .level(Level.HIGH)
-                                    .build()
-                    )
+                    .addTasks( ImmutableTask.builder()
+                            .id(2)
+                            .title("1")
+                            .level(Level.MEDIUM)
+                            .completed(false)
+                            .build())
                     .build()
     );
+
+
+    Task task = ImmutableTask.builder()
+            .id(2)
+            .title("1")
+            .level(Level.MEDIUM)
+            .completed(false)
+            .build();
 
 
     String user = "root";
