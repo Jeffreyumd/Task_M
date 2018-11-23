@@ -1,5 +1,6 @@
 package model;
 
+import io.vavr.control.Try;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 

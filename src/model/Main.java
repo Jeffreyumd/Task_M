@@ -11,6 +11,7 @@ public class Main {
   private static Connection myConn;
 
   public static void main(String[] args) {
+    
 
     Seq<Project> projects = Vector.of(
             ImmutableProject.builder()
@@ -35,18 +36,10 @@ public class Main {
             .build();
 
 
-    String user = "root";
-    String password = "Qsetthuk7";
-    String url = "jdbc:mysql://localhost:3306/Task_manager?useUnicode=" +
-            "true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode" +
-            "=false&serverTimezone=UTC";
-
-
-
     DAO dao = new DAO();
     dao.getConnection();
-    dao.printAll_Task();
-    dao.closeConnection();
+    dao.getAll_Task();
+    dao.closeConn();
     //dao.getAll_Task();
 
 

@@ -1,6 +1,9 @@
 package model;
 
+import io.vavr.control.Try;
+
 import java.sql.Connection;
+import java.util.List;
 
 public interface DAOI {
 
@@ -21,7 +24,7 @@ public interface DAOI {
      * Get all the selected Item from the data base, items are selected based on the given sql.
      * @param sql The sql code to be inserted into From:
      */
-    public void getAll(String sql);
+    //public Try<Void> getAll(String sql);
 
     //public void inset(String table);
 }

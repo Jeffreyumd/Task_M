@@ -1,7 +1,10 @@
-package model;
+package model.Item;
+
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface ItemDAO<T> {
 
@@ -14,6 +17,12 @@ public interface ItemDAO<T> {
      * @throws SQLException The exception will be according to the error
      */
     T create(ResultSet rows);
+
+    /**
+     * Find all the given object in the data base and store it in a list.
+     * @return A list of object based on implemented class
+     */
+   // List<T> findAll(String sql);
 
 
 }

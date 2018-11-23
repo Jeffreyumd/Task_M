@@ -1,7 +1,8 @@
 package model;
 
-import io.vavr.API;
 import io.vavr.control.Try;
+import model.Item.CategoryDAO;
+import model.Item.TaskDAO;
 
 import java.io.*;
 import java.sql.Connection;
@@ -9,14 +10,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 // Data access object
-public class DAO {
+public class DAO implements DAOI {
 
     private final String url;
     private final String user;
@@ -26,6 +26,7 @@ public class DAO {
     private List<Task> list = new ArrayList<>();
 
     private CategoryDAO categoryDAO = new CategoryDAO();
+    private TaskDAO taskDAO = new TaskDAO();
 
     public DAO() {
         //get database properties
@@ -34,39 +35,41 @@ public class DAO {
         this.url = properties.getProperty("url");
         this.user = properties.getProperty("user");
         this.pass = properties.getProperty("pass");
-
     }
+
 
     private Properties setProperties() {
-        Properties prop = new Properties();
-        try {
+        return Try.of(() -> {
+            Properties prop = new Properties();
             prop.load(new FileInputStream("resources /Prop.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        return prop;
+            return prop;
+        }).getOrElseThrow(throwable -> {
+            throw new IllegalArgumentException(throwable.getMessage());
+        });
     }
 
 
+    @Override
     public Connection getConnection() {
         if (this.conn == null) {
-            try {
-
-                this.conn = DriverManager.getConnection(
-                        url,
-                        user,
-                        pass
-                );
+            Try.of(() -> {
+                this.conn = DriverManager
+                        .getConnection(
+                                url,
+                                user,
+                                pass
+                        );
                 System.out.println("Connection made");
                 return this.conn;
-            } catch (SQLException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+            }).getOrElseThrow(throwable -> {
+                throw new IllegalArgumentException(throwable.getMessage());
+            });
         }
         return this.conn;
     }
 
 
+    @Override
     public void closeConnection() {
         try {
             this.conn.close();
@@ -77,10 +80,20 @@ public class DAO {
     }
 
 
-    private void getAll_Task() {
+    public Optional<Void> closeConn() {
+         Try.of(() -> {
+            this.conn.close();
+            System.out.println("Connection closed");
+            return Optional.empty();
+        }).getOrElseThrow(throwable -> {
+            throw new RuntimeException(throwable.getMessage());
+        });
+        return Optional.empty();
+    }
 
-        try {
 
+    public Optional getAll_Task() {
+         return Try.of(() -> {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
 
@@ -91,79 +104,36 @@ public class DAO {
                 list.add(createTask(rows));
             }
 
+            list.forEach(i -> {
+                System.out.println("Title:"
+                        + i.title() + ", Level:"
+                        + i.level() + ", Date:"
+                        + i.level() + ", Date:");
+            });
+
             rows.close();
             con.close();
-
-        } catch (SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    public void printAll_Task() {
-        getAll_Task();
-        for (Task task : list) {
-            System.out.println("Title:" + task.title() + ", Level:" + task.level() + ", Date:" + task.level() + ", Date:");
-        }
+            return Optional.empty();
+        }).getOrElseThrow(throwable -> {
+            throw new IllegalArgumentException(throwable.getMessage());
+        });
     }
 
 
-    private Task createTask(ResultSet rows) throws SQLException {
-
-        String title = rows.getString("title");
-        Level level = Level.valueOf(rows.getString("level"));
-        String description = rows.getString("description");
-        //Date date = rows.getDate("Date").toLocalDate();
-        java.util.Date newDate = rows.getDate("Date");
-        boolean completed = rows.getBoolean("completed");
-
-        Task task = ImmutableTask
-                .builder()
-                .title(title)
-                .level(level)
-                //.date()
-                .description(description)
-                .completed(completed).build();
-
+    private Task createTask(ResultSet rows) {
+        Task task = taskDAO.create(rows);
         return task;
     }
 
+
     private Category createCategory(ResultSet rows) {
-
         Category category = categoryDAO.create(rows);
-
         return category;
     }
 
 
     public int getTaksCount() {
         return list.size();
-    }
-
-    public Try<Void> insertTask(Task task) {
-
-        return null;
-    }
-
-    public Try<Void> updateTask(Task task) {
-        return null;
-    }
-
-    public Try<Void> deleteTask(Task task) {
-        return null;
-    }
-
-
-    /**
-     * Project methods
-     */
-
-
-    public void getAll_Project() {
-
-    }
-
-    private Project createProject() {
-        return null;
     }
 
 
