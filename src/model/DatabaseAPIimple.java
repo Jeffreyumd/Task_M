@@ -7,12 +7,15 @@ public class DatabaseAPIimple {
 
 
 
-  @Override
+
   public void setConnection(String url, String user, String pass) {
-    dao = new DAO("", "", "");
+    try {
+      dao = new DAO();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
-  @Override
   public void closeConnection() {
     dao.closeConnection();
   }

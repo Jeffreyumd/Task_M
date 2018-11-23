@@ -1,7 +1,9 @@
 package model;
 
+import io.vavr.API;
 import io.vavr.control.Try;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,146 +13,155 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 // Data access object
 public class DAO {
 
-  final private String url;
-  final private String user;
-  final private String pass;
-  private Connection conn = null;
-  private List<Task> list = new ArrayList<>();
+    private final String url;
+    private final String user;
+    private final String pass;
 
-  public DAO(String url, String user, String pass) {
-    this.url = url;
-    this.user = user;
-    this.pass = pass;
-  }
+    private Connection conn = null;
+    private List<Task> list = new ArrayList<>();
 
-  /**
-   *
-   * @return
-   */
-  public Connection getConnection() {
-    if (this.conn == null) {
-      try {
+    public DAO() {
+        //get database properties
+        Properties properties = setProperties();
 
-        this.conn = DriverManager.getConnection(
-                url,
-                user,
-                pass
-        );
-        System.out.println("Connection made");
+        this.url = properties.getProperty("url");
+        this.user = properties.getProperty("user");
+        this.pass = properties.getProperty("pass");
+
+    }
+
+    private Properties setProperties() {
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream("resources /Prop.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return prop;
+    }
+
+
+    public Connection getConnection() {
+        if (this.conn == null) {
+            try {
+
+                this.conn = DriverManager.getConnection(
+                        url,
+                        user,
+                        pass
+                );
+                System.out.println("Connection made");
+                return this.conn;
+            } catch (SQLException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
         return this.conn;
-      } catch (SQLException e) {
-        throw new RuntimeException(e);
-      }
     }
-    return this.conn;
-  }
 
 
-  /**
-   * close database connection.
-   */
-  public void closeConnection() {
-    try {
-      this.conn.close();
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
+    /**
+     * close database connection.
+     */
+    public void closeConnection() {
+        try {
+            this.conn.close();
+            System.out.println("connection closed");
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
-  }
 
 
-  /**
-   * Store all the task into a list and print the result query.
-   */
-  private void getAll_Task()  {
+    /**
+     * Store all the task into a list and print the result query.
+     */
+    private void getAll_Task() {
 
-    try {
+        try {
 
-      Connection con = getConnection();
-      Statement stmt = con.createStatement();
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
 
-      String sqlGet = "SELECT * FROM TASK";
-      ResultSet rows = stmt.executeQuery(sqlGet);
+            String sqlGet = "SELECT * FROM TASK";
+            ResultSet rows = stmt.executeQuery(sqlGet);
 
-      while (rows.next()) {
-        list.add(createTask(rows));
-      }
+            while (rows.next()) {
+                list.add(createTask(rows));
+            }
 
-      rows.close();
-      con.close();
+            rows.close();
+            con.close();
 
-    } catch (SQLException e) {
-      throw new IllegalArgumentException(e);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
-  }
 
-  public void printAll_Task() {
-    getAll_Task();
-    for (Task task: list) {
-      System.out.println("Title:" + task.title() + ", Level:" + task.level() + ", Date:" + task.level() + ", Date:");
+    public void printAll_Task() {
+        getAll_Task();
+        for (Task task : list) {
+            System.out.println("Title:" + task.title() + ", Level:" + task.level() + ", Date:" + task.level() + ", Date:");
+        }
     }
-  }
 
 
-  private Task createTask(ResultSet rows) throws SQLException {
+    private Task createTask(ResultSet rows) throws SQLException {
 
-    String title = rows.getString("title");
-    Level level = Level.valueOf(rows.getString("level"));
-    String description = rows.getString("description");
-    //Date date = rows.getDate("Date").toLocalDate();
-    java.util.Date newDate = rows.getDate("Date");
-    boolean completed = rows.getBoolean("completed");
+        String title = rows.getString("title");
+        Level level = Level.valueOf(rows.getString("level"));
+        String description = rows.getString("description");
+        //Date date = rows.getDate("Date").toLocalDate();
+        java.util.Date newDate = rows.getDate("Date");
+        boolean completed = rows.getBoolean("completed");
 
-    Task task = ImmutableTask
-            .builder()
-            .title(title)
-            .level(level)
-            //.date()
-            .description(description)
-            .completed(completed).build();
+        Task task = ImmutableTask
+                .builder()
+                .title(title)
+                .level(level)
+                //.date()
+                .description(description)
+                .completed(completed).build();
 
-    return task;
-  }
-
-
-  public int getTaksCount() {
-    return list.size();
-  }
-
-  public Try<Void> insertTask(Task task) {
-
-    return null;
-  }
-
-  public Try<Void> updateTask(Task task) {
-    return null;
-  }
-
-  public Try<Void> deleteTask(Task task) {
-    return  null;
-  }
+        return task;
+    }
 
 
-  /**
-   * Project methods
-   */
+    public int getTaksCount() {
+        return list.size();
+    }
+
+    public Try<Void> insertTask(Task task) {
+
+        return null;
+    }
+
+    public Try<Void> updateTask(Task task) {
+        return null;
+    }
+
+    public Try<Void> deleteTask(Task task) {
+        return null;
+    }
 
 
-  public void getAll_Project() {
-
-  }
-
-  private Project createProject() {
-    return null;
-  }
+    /**
+     * Project methods
+     */
 
 
+    public void getAll_Project() {
 
+    }
 
-
+    private Project createProject() {
+        return null;
+    }
 
 
 }

@@ -42,11 +42,14 @@ public class Main {
             "=false&serverTimezone=UTC";
 
 
-    DAO dao = new DAO(url, user, password);
+
+    DAO dao = new DAO();
     dao.getConnection();
-    //dao.getAll_Task();
     dao.printAll_Task();
     dao.closeConnection();
+    //dao.getAll_Task();
+
+
 
 
   }
