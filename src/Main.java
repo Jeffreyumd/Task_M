@@ -1,17 +1,17 @@
-package model;
-
 import java.sql.Connection;
 
 
+import controller.DAO;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
+import model.*;
 
 
 public class Main {
   private static Connection myConn;
 
   public static void main(String[] args) {
-    
+
 
     Seq<Project> projects = Vector.of(
             ImmutableProject.builder()

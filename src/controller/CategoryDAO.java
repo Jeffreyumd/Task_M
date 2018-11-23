@@ -1,14 +1,10 @@
-package model.Item;
+package controller;
 
 import io.vavr.control.Try;
 import model.Category;
 import model.ImmutableCategory;
-import model.Item.ItemDAO;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CategoryDAO implements ItemDAO<Category> {
 

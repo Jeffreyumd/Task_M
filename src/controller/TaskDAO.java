@@ -1,15 +1,12 @@
-package model.Item;
+package controller;
 
 
-import io.vavr.Function5;
-import io.vavr.Function6;
 import io.vavr.control.Try;
 import model.ImmutableTask;
 import model.Level;
 import model.Task;
 
 import java.sql.ResultSet;
-import java.util.List;
 
 
 public class TaskDAO implements ItemDAO<model.Task> {
@@ -32,9 +29,8 @@ public class TaskDAO implements ItemDAO<model.Task> {
                     .level(level)
                     //.date()
                     .description(description)
-                    .completed(completed).build();
-
-            //createTask.apply(id,title,level,description,newDate,completed);
+                    .completed(completed)
+                    .build();
 
             return task;
         }).getOrElseThrow( throwable -> {

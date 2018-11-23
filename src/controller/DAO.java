@@ -1,8 +1,8 @@
-package model;
+package controller;
 
 import io.vavr.control.Try;
-import model.Item.CategoryDAO;
-import model.Item.TaskDAO;
+import model.Category;
+import model.Task;
 
 import java.io.*;
 import java.sql.Connection;
@@ -38,6 +38,10 @@ public class DAO implements DAOI {
     }
 
 
+    /**
+     *
+     * @return
+     */
     private Properties setProperties() {
         return Try.of(() -> {
             Properties prop = new Properties();
