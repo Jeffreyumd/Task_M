@@ -25,6 +25,8 @@ public class DAO {
     private Connection conn = null;
     private List<Task> list = new ArrayList<>();
 
+    private CategoryDAO categoryDAO = new CategoryDAO();
+
     public DAO() {
         //get database properties
         Properties properties = setProperties();
@@ -65,9 +67,6 @@ public class DAO {
     }
 
 
-    /**
-     * close database connection.
-     */
     public void closeConnection() {
         try {
             this.conn.close();
@@ -78,9 +77,6 @@ public class DAO {
     }
 
 
-    /**
-     * Store all the task into a list and print the result query.
-     */
     private void getAll_Task() {
 
         try {
@@ -129,6 +125,13 @@ public class DAO {
                 .completed(completed).build();
 
         return task;
+    }
+
+    private Category createCategory(ResultSet rows) {
+
+        Category category = categoryDAO.create(rows);
+
+        return category;
     }
 
 
