@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 // Data access object
@@ -37,8 +36,8 @@ public class DAO implements DAOI {
 
 
     /**
-     *
-     * @return
+     * Read url, user and pass from the Proper file for connecting to the database.
+     * @return Properties with store information needed for database connection.
      */
     private Properties setProperties() {
         return Try.of(() -> {
@@ -153,6 +152,11 @@ public class DAO implements DAOI {
         });
     }
 
+    /**
+     * 
+     * @param rows
+     * @return
+     */
     private Task createTask(ResultSet rows) {
         Task task = model.createTask(rows);
         return task;
