@@ -19,14 +19,14 @@ import org.immutables.value.Generated;
 @Generated(from = "Project", generator = "Immutables")
 @SuppressWarnings({"all"})
 public final class ImmutableProject implements Project {
-  private final String id;
+  private final int id;
   private final String name;
   private final Option<Instant> dueDate;
   private final boolean completed;
   private final List<Task> tasks;
 
   private ImmutableProject(
-      String id,
+      int id,
       String name,
       Option<Instant> dueDate,
       boolean completed,
@@ -56,7 +56,7 @@ public final class ImmutableProject implements Project {
    * @return Unique id for the project.
    */
   @Override
-  public String id() {
+  public int id() {
     return id;
   }
 
@@ -94,14 +94,13 @@ public final class ImmutableProject implements Project {
 
   /**
    * Copy the current immutable object by setting a value for the {@link Project#id() id} attribute.
-   * An equals check used to prevent copying of the same value by returning {@code this}.
+   * A value equality check is used to prevent copying of the same value by returning {@code this}.
    * @param value A new value for id
    * @return A modified copy of the {@code this} object
    */
-  public final ImmutableProject withId(String value) {
-    String newValue = Objects.requireNonNull(value, "id");
-    if (this.id.equals(newValue)) return this;
-    return new ImmutableProject(newValue, this.name, this.dueDate, this.completed, this.tasks);
+  public final ImmutableProject withId(int value) {
+    if (this.id == value) return this;
+    return new ImmutableProject(value, this.name, this.dueDate, this.completed, this.tasks);
   }
 
   /**
@@ -173,7 +172,7 @@ public final class ImmutableProject implements Project {
   }
 
   private boolean equalTo(ImmutableProject another) {
-    return id.equals(another.id)
+    return id == another.id
         && name.equals(another.name)
         && this.dueDate().equals(another.dueDate())
         && completed == another.completed
@@ -187,7 +186,7 @@ public final class ImmutableProject implements Project {
   @Override
   public int hashCode() {
     int h = 5381;
-    h += (h << 5) + id.hashCode();
+    h += (h << 5) + id;
     h += (h << 5) + name.hashCode();
     h += (h << 5) + (dueDate().hashCode());
     h += (h << 5) + Boolean.hashCode(completed);
@@ -249,7 +248,7 @@ public final class ImmutableProject implements Project {
     private long initBits = 0x7L;
 
     private Option<Instant> dueDate_optional = Option.none();
-    private String id;
+    private int id;
     private String name;
     private boolean completed;
     private List<Task> tasks = new ArrayList<Task>();
@@ -280,8 +279,8 @@ public final class ImmutableProject implements Project {
      * @param id The value for id 
      * @return {@code this} builder for use in a chained invocation
      */
-    public final Builder id(String id) {
-      this.id = Objects.requireNonNull(id, "id");
+    public final Builder id(int id) {
+      this.id = id;
       initBits &= ~INIT_BIT_ID;
       return this;
     }

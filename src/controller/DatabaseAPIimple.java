@@ -9,12 +9,10 @@ public class DatabaseAPIimple {
 
 
   public void setConnection(String url, String user, String pass) {
-    try {
-      dao = new DAO();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    dao.getConnection();
   }
+
+
 
   public void closeConnection() {
     dao.closeConnection();

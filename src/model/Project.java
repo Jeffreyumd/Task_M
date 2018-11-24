@@ -15,7 +15,7 @@ public interface Project {
   /**
    * @return Unique id for the project.
    */
-  String id();
+  int id();
 
   /**
    * @return Human readable name of the project.

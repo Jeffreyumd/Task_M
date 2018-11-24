@@ -1,6 +1,9 @@
 package controller;
 
 import io.vavr.control.Try;
+import model.Category;
+import model.Project;
+import model.Task;
 
 import java.sql.Connection;
 import java.util.List;
@@ -19,12 +22,14 @@ public interface DAOI {
      */
     public void closeConnection();
 
-
     /**
-     * Get all the selected Item from the data base, items are selected based on the given sql.
-     * @param sql The sql code to be inserted into From:
+     * Get all the Project currently in the database.
+     *
+     * @return A list of projects
      */
-    //public Try<Void> getAll(String sql);
+    List<Project> getAllProject();
 
-    //public void inset(String table);
+    List<Task> getAllTask();
+
+    List<Category> getAllCategory();
 }

@@ -8,14 +8,13 @@ import model.*;
 
 
 public class Main {
-  private static Connection myConn;
 
   public static void main(String[] args) {
 
 
     Seq<Project> projects = Vector.of(
             ImmutableProject.builder()
-                    .id("111")
+                    .id(111)
                     .name("Project 1")
                     .completed(false)
                     .addTasks( ImmutableTask.builder()
@@ -38,9 +37,9 @@ public class Main {
 
     DAO dao = new DAO();
     dao.getConnection();
-    dao.getAll_Task();
-    dao.closeConn();
-    //dao.getAll_Task();
+    dao.getAllCategory();
+    dao.closeConnection();
+
 
 
 

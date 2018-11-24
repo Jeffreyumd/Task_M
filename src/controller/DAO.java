@@ -1,8 +1,7 @@
 package controller;
 
 import io.vavr.control.Try;
-import model.Category;
-import model.Task;
+import model.*;
 
 import java.io.*;
 import java.sql.Connection;
@@ -25,8 +24,7 @@ public class DAO implements DAOI {
     private Connection conn = null;
     private List<Task> list = new ArrayList<>();
 
-    private CategoryDAO categoryDAO = new CategoryDAO();
-    private TaskDAO taskDAO = new TaskDAO();
+    private DataModel model = new DataModelImple();
 
     public DAO() {
         //get database properties
@@ -83,56 +81,92 @@ public class DAO implements DAOI {
         }
     }
 
+    @Override
+    public List<Project> getAllProject() {
+        List<Project> project = new ArrayList();
 
-    public Optional<Void> closeConn() {
-         Try.of(() -> {
-            this.conn.close();
-            System.out.println("Connection closed");
-            return Optional.empty();
-        }).getOrElseThrow(throwable -> {
-            throw new RuntimeException(throwable.getMessage());
-        });
-        return Optional.empty();
-    }
-
-
-    public Optional getAll_Task() {
-         return Try.of(() -> {
+        return Try.of(() -> {
             Connection con = getConnection();
             Statement stmt = con.createStatement();
 
-            String sqlGet = "SELECT * FROM TASK";
+            String sqlGet = "SELECT * FROM Project";
             ResultSet rows = stmt.executeQuery(sqlGet);
 
             while (rows.next()) {
-                list.add(createTask(rows));
+                project.add(createProject(rows));
             }
 
-            list.forEach(i -> {
-                System.out.println("Title:"
-                        + i.title() + ", Level:"
-                        + i.level() + ", Date:"
-                        + i.level() + ", Date:");
-            });
+            model.printAllProject(project);
 
             rows.close();
-            con.close();
-            return Optional.empty();
+            return project;
         }).getOrElseThrow(throwable -> {
             throw new IllegalArgumentException(throwable.getMessage());
         });
     }
 
+    @Override
+    public List<Task> getAllTask() {
+        List<Task> task = new ArrayList();
+
+        return Try.of(() -> {
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+
+            String sqlGet = "SELECT * FROM Task";
+            ResultSet rows = stmt.executeQuery(sqlGet);
+
+            while (rows.next()) {
+                task.add(createTask(rows));
+            }
+
+            model.printAllTask(task);
+
+            rows.close();
+            return task;
+        }).getOrElseThrow(throwable -> {
+            throw new IllegalArgumentException(throwable.getMessage());
+        });
+    }
+
+    @Override
+    public List<Category> getAllCategory() {
+        List<Category> category = new ArrayList();
+
+        return Try.of(() -> {
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+
+            String sqlGet = "SELECT * FROM Category";
+            ResultSet rows = stmt.executeQuery(sqlGet);
+
+            while (rows.next()) {
+                category.add(createCategory(rows));
+            }
+
+            model.printAllCategory(category);
+
+            rows.close();
+            return category;
+        }).getOrElseThrow(throwable -> {
+            throw new IllegalArgumentException(throwable.getMessage());
+        });
+    }
 
     private Task createTask(ResultSet rows) {
-        Task task = taskDAO.create(rows);
+        Task task = model.createTask(rows);
         return task;
     }
 
 
     private Category createCategory(ResultSet rows) {
-        Category category = categoryDAO.create(rows);
+        Category category = model.createCategory(rows);
         return category;
+    }
+
+    private Project createProject(ResultSet rows) {
+        Project project = model.createProject(rows);
+        return project;
     }
 
 
