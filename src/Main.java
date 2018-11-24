@@ -1,7 +1,4 @@
-import java.sql.Connection;
-
-
-import controller.DAO;
+import controller.DAOImple;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
 import model.*;
@@ -35,7 +32,7 @@ public class Main {
             .build();
 
 
-    DAO dao = new DAO();
+    DAOImple dao = new DAOImple();
     dao.getConnection();
     dao.getAllCategory();
     dao.closeConnection();
