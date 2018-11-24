@@ -1,6 +1,5 @@
 package model;
 
-import io.vavr.control.Try;
 import org.immutables.value.Value;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
@@ -12,40 +11,38 @@ import io.vavr.control.Option;
 @VavrEncodingEnabled
 public interface Task {
 
-  /**
-   * @return Unique id for the task.
-   */
-  int id();
+    /**
+     * @return Unique id for the task.
+     */
+    int id();
 
-  /**
-   * @return title of the given task.
-   */
-  String title();
+    /**
+     * @return title of the given task.
+     */
+    String title();
 
-  /**
-   * @return the level of how important the task is.
-   */
-  Level level();
+    /**
+     * @return the level of how important the task is.
+     */
+    Level level();
 
-  /**
-   * @return the category the task belongs to.
-   */
-  Option<Category> category();
+    /**
+     * @return the category the task belongs to.
+     */
+    Option<Category> category();
 
-  /**
-   * @return a due date of the task if given.
-   */
-  Option<Instant> date();
+    /**
+     * @return a due date of the task if given.
+     */
+    Option<Instant> date();
 
-  /**
-   * @return description of the task if given.
-   */
-  Option<String> description();
+    /**
+     * @return description of the task if given.
+     */
+    Option<String> description();
 
-  /**
-   * @return boolean is the task is completed or not.
-   */
-  boolean completed();
-
-
+    /**
+     * @return boolean is the task is completed or not.
+     */
+    boolean completed();
 }

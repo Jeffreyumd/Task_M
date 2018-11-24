@@ -11,9 +11,7 @@ import java.util.List;
 public interface DAOI {
 
     /**
-     * Create a connection to the data base.
-     *
-     * @return The connection to the data base
+     * @return A connection to a data base
      */
     public Connection getConnection();
 
@@ -23,13 +21,17 @@ public interface DAOI {
     public void closeConnection();
 
     /**
-     * Get all the Project currently in the database.
-     *
-     * @return A list of projects
+     * @return A list of projects currently stored in the database
      */
     List<Project> getAllProject();
 
+    /**
+     * @return A list of task currently stored in the database
+     */
     List<Task> getAllTask();
 
+    /**
+     * @return A list of category currently stored in the database
+     */
     List<Category> getAllCategory();
 }

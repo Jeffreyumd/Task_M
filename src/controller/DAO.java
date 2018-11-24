@@ -153,9 +153,9 @@ public class DAO implements DAOI {
     }
 
     /**
-     * 
-     * @param rows
-     * @return
+     * Create a task with the result set collected from the database.
+     * @param rows The result set collected from the database
+     * @return A new task with values collected from the database
      */
     private Task createTask(ResultSet rows) {
         Task task = model.createTask(rows);
@@ -163,11 +163,21 @@ public class DAO implements DAOI {
     }
 
 
+    /**
+     * Create a category with the result set collected from the database.
+     * @param rows The result set collected from the database
+     * @return A new category with values collected from the database
+     */
     private Category createCategory(ResultSet rows) {
         Category category = model.createCategory(rows);
         return category;
     }
 
+    /**
+     * Create a project with the result set collected from the database.
+     * @param rows The result set collected from the database
+     * @return A new project with values collected from the database
+     */
     private Project createProject(ResultSet rows) {
         Project project = model.createProject(rows);
         return project;
