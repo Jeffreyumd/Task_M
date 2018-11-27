@@ -63,7 +63,7 @@ public class DAOImple implements DAO {
                 System.out.println("Connection made");
                 return this.conn;
             }).getOrElseThrow(throwable -> {
-                throw new IllegalArgumentException(throwable.getMessage());
+                throw new RuntimeException(throwable.getMessage());
             });
         }
         return this.conn;
@@ -81,7 +81,7 @@ public class DAOImple implements DAO {
     }
 
     @Override
-    public List<Project> getAllProject() {
+    public Try<List<Project>> getAllProject() {
         List<Project> project = new ArrayList();
 
         return Try.of(() -> {
@@ -95,17 +95,15 @@ public class DAOImple implements DAO {
                 project.add(createProject(rows));
             }
 
-            model.printAllProject(project);
+
 
             rows.close();
             return project;
-        }).getOrElseThrow(throwable -> {
-            throw new IllegalArgumentException(throwable.getMessage());
         });
     }
 
     @Override
-    public List<Task> getAllTask() {
+    public Try<List<Task>> getAllTask() {
         List<Task> task = new ArrayList();
 
         return Try.of(() -> {
@@ -119,17 +117,25 @@ public class DAOImple implements DAO {
                 task.add(createTask(rows));
             }
 
-            model.printAllTask(task);
+            task.forEach(i -> {
+                System.out.println("ID:" + i.id() +
+                        " Title:" + i.title() +
+                        " Level:" + i.level() +
+                        " Date:" + i.date() +
+                        " Category:" + i.category() +
+                        " Description:" + i.description() +
+                        " Completed:" + i.completed()
+                );
+
+            });
 
             rows.close();
             return task;
-        }).getOrElseThrow(throwable -> {
-            throw new IllegalArgumentException(throwable.getMessage());
         });
     }
 
     @Override
-    public List<Category> getAllCategory() {
+    public Try<List<Category>> getAllCategory() {
         List<Category> category = new ArrayList();
 
         return Try.of(() -> {
@@ -143,12 +149,8 @@ public class DAOImple implements DAO {
                 category.add(createCategory(rows));
             }
 
-            model.printAllCategory(category);
-
             rows.close();
             return category;
-        }).getOrElseThrow(throwable -> {
-            throw new IllegalArgumentException(throwable.getMessage());
         });
     }
 

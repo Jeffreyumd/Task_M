@@ -23,15 +23,15 @@ public interface DAO {
     /**
      * @return A list of projects currently stored in the database
      */
-    List<Project> getAllProject();
+    Try<List<Project>> getAllProject();
 
     /**
      * @return A list of task currently stored in the database
      */
-    List<Task> getAllTask();
+    Try<List<Task>> getAllTask();
 
     /**
      * @return A list of category currently stored in the database
      */
-    List<Category> getAllCategory();
+    Try<List<Category>> getAllCategory();
 }
