@@ -1,5 +1,7 @@
 package model;
 
+import io.vavr.control.Try;
+
 import java.sql.ResultSet;
 import java.util.List;
 
